@@ -9,3 +9,5 @@ python lab1.py
 ```
 python gererator.py
 ```
+
+![Пример](./example.png)
