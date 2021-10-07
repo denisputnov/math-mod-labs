@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import json
 
 
-DATA_FILE_PATH = './generated.json'
+DATA_FILE_PATH = './data.json'
 
 
 def parse_json_data(data_path):
@@ -32,7 +32,7 @@ def plot(data, graph_range):
 
 def parse_graph_range():
     graph_count = list(map(int, input("Какой график вывести ( -1 чтобы покзаать все )?: ").split()))
-    if graph_count[0] == -1 or graph_count[0] < 0 or graph_count[1] < 0:
+    if graph_count[0] == -1 or graph_count[0] < 0:
         return [-1, -1]
     elif (len(graph_count) == 1): 
         start = graph_count[0] - 1
