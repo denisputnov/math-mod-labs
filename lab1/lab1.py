@@ -34,16 +34,16 @@ class Plotter:
         plt.show()
 
     def plot_all(self):
-        self.plot_range(1, len(self.data.items()))
+        self.plot_range(0, len(self.data.items()) - 1)
 
     def plot_index(self, index):
-        label, cords = list(self.data.items())[index - 1]
+        label, cords = list(self.data.items())[index]
         self._plot(cords["x"], cords["y"], label)
         self._show_figure()
 
     def plot_range(self, start, end):
         print(start, end)
-        for label, cords in list(self.data.items())[start-1: end]:
+        for label, cords in list(self.data.items())[start: end + 1]:
             self._plot(cords["x"], cords["y"], label)
         self._show_figure()
 
@@ -68,10 +68,10 @@ def main():
         return plotter.plot_all()
 
     if args.one:
-        return plotter.plot_index(int(args.one))
+        return plotter.plot_index(int(args.one) - 1)
 
     if args.range:
-        start, end = [int(value) for value in args.range.split('-')]
+        start, end = [int(value) - 1 for value in args.range.split('-')]
         return plotter.plot_range(start, end)
 
     if args.group:
