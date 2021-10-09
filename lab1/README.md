@@ -2,7 +2,7 @@
 
 Запуск скрипта:
 ```
-python lab1.py
+python lab1.py <-a> <-o int> <-r int-int> <-g int-int-int-...N...-int>
 ```
 
 Генерация нового датасета:

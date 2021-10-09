@@ -1,65 +1,86 @@
 import matplotlib.pyplot as plt
 import json
-
+import argparse
 
 DATA_FILE_PATH = './data.json'
 
 
-def parse_json_data(data_path):
-    with open(data_path, 'r') as f:
-        data = json.load(f)
+class Plotter:
+    def __init__(self, data_path) -> None:
+        self.data = self._parse_json_data(data_path)
+        self.fig, self.ax = plt.subplots()
 
-    def parse_string_to_values(string):
-        return list(map(float, string.split())) 
-    
-    for label in data: 
-        data[label]["x"] = parse_string_to_values(data[label]["x"])
-        data[label]["y"] = parse_string_to_values(data[label]["y"]) 
-    return data
+    def _parse_json_data(self, data_path):
+        with open(data_path, 'r') as f:
+            data = json.load(f)
 
+        def parse_string_to_values(string):
+            return list(map(float, string.split()))
 
-def plot(data, graph_range): 
-    start, end = graph_range
-    fig, ax = plt.subplots()
-    for label, cords in list(data.items())[start : end+1]:
-        ax.scatter(cords["x"], cords["y"], label=label)
-        # ax.plot(cords["x"], cords["y"], label=label)
-        ax.set_xlabel('x label')
-        ax.set_ylabel('y label')
-        ax.set_title('Simple Plot')
-        ax.legend()
+        for label in data:
+            data[label]["x"] = parse_string_to_values(data[label]["x"])
+            data[label]["y"] = parse_string_to_values(data[label]["y"])
+        return data
 
+    def _plot(self, x, y, label):
+        self.ax.scatter(x, y, label=label)
+        # ax.plot(x, y, label=label)
+        self.ax.set_xlabel('Значение по X')
+        self.ax.set_ylabel('Значение по Y')
+        self.ax.set_title('Поточечный график')
+        self.ax.legend()
 
-def parse_graph_range():
-    graph_count = list(map(int, input("Какой график вывести ( -1 чтобы покзаать все )?: ").split()))
-    if graph_count[0] == -1 or graph_count[0] < 0:
-        return [-1, -1]
-    elif (len(graph_count) == 1): 
-        start = graph_count[0] - 1
-        end = graph_count[0] - 1
-    elif(len(graph_count) == 2 and graph_count[1] >= graph_count[0]):
-        start = graph_count[0] - 1
-        end = graph_count[1] - 1
-    else:
-        print("Неверно указаны графики. Укажите их в формате <int> или <int> <int> для указания диапазона.")
-        exit(1)
-    return start, end
-    
+    def _show_figure(self):
+        plt.show()
+
+    def plot_all(self):
+        self.plot_range(1, len(self.data.items()))
+
+    def plot_index(self, index):
+        label, cords = list(self.data.items())[index - 1]
+        self._plot(cords["x"], cords["y"], label)
+        self._show_figure()
+
+    def plot_range(self, start, end):
+        print(start, end)
+        for label, cords in list(self.data.items())[start-1: end]:
+            self._plot(cords["x"], cords["y"], label)
+        self._show_figure()
+
+    def plot_group(self, index_array):
+        data = list(self.data.items())
+        for label, cords in [data[index] for index in index_array]:
+            self._plot(cords["x"], cords["y"], label)
+        self._show_figure()
+
 
 def main():
-    start, end = parse_graph_range()
-    data = parse_json_data(DATA_FILE_PATH)
+    parser = argparse.ArgumentParser(description='Plot graphs')
+    parser.add_argument('-a', '--all', help="Show all graphs", required=False, action='store_true')
+    parser.add_argument('-o', '--one', help="Show one graph", required=False)
+    parser.add_argument('-r', '--range', help="Show range of graphs", required=False)
+    parser.add_argument('-g', '--group', help="Show group of graphs", required=False)
+    args = parser.parse_args()
 
-    if start == -1:
-        start, end = 0, len(data) - 1
-    
-    if end > len(data) - 1:
-        print("В данных нет такого количества графиков")
-        exit(1)
+    plotter = Plotter(DATA_FILE_PATH)
 
-    plot(data, [start, end])
-    plt.show()
+    if args.all:
+        return plotter.plot_all()
+
+    if args.one:
+        return plotter.plot_index(int(args.one))
+
+    if args.range:
+        start, end = [int(value) for value in args.range.split('-')]
+        return plotter.plot_range(start, end)
+
+    if args.group:
+        index_array = [int(value) - 1 for value in args.group.split('-')]
+        return plotter.plot_group(index_array)
+
+    print("Неожиданная ошибка в параметрах запуска")
+    exit(1)
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()
