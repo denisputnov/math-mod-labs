@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Interpolation:
     @staticmethod
     def polynomial_interpolation(x, y, xl):
@@ -43,15 +46,16 @@ class Interpolation:
         return res
 
     @staticmethod
-    def piecewise_parabolic_interpolation(x, y):
-        a0 = []
-        a1 = []
-        a2 = []
-        for i in range(1, len(x)-1):
-            a2.append(((y[i+1]-y[i - 1])/((x[i + 1] - x[i - 1])*(x[i + 1] - x[i]))) - 
-                        ((y[i] - y[i - 1])/((x[i] - x[i - 1])*(x[i + 1]-x[i]))))
-            a1.append((y[i] - y[i - 1] - (a2[i-1] *
-                        ((x[i] ** 2) - (x[i - 1] ** 2)))) / (x[i] - x[i - 1]))
-            a0.append(y[i - 1] - (a1[i-1] * x[i - 1]) -
-                        (a2[i-1] * (x[i - 1] ** 2)))
-        return [a0, a1, a2]
+    def piecewise_parabolic_interpolation(x, y, arg):
+        res = 0
+        for i in range(len(x)-1):
+            if arg >= x[i] and arg <= x[i+1]:
+                matrix = np.array(
+                    [[x[i-1]**2, x[i-1], 1], 
+                     [x[i]**2, x[i], 1], 
+                     [x[i+1]**2, x[i+1], 1]])
+                vector = np.array([y[i-1], y[i], y[i+1]])
+                poly = np.linalg.solve(matrix, vector) 
+                res = poly[0]*arg**2 + poly[1]*arg + poly[2]
+            
+        return res

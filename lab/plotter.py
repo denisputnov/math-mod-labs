@@ -7,6 +7,7 @@ from scipy import interpolate
 from inputs.filter_data import filter_data
 from interpolation import Interpolation
 from inputs.parse_interpolation_mode import parse_interpolation_mode
+from approximation import approximation
 
 
 class Plotter:
@@ -60,13 +61,11 @@ class Plotter:
     def draw_piecewise_parabolic_interpolation(self):
         filtered_data = filter_data(self.data)
         for label, cords in filtered_data.items():
-            a0, a1, a2 = Interpolation.piecewise_parabolic_interpolation(cords['x'], cords['y'])
-            for i in range(0, len(cords['x'])-2, 2):
-                xi = np.linspace(cords['x'][i], cords['x'][i+2])
-                f = a0[i] + a1[i]*xi + a2[i]*xi*xi
-                plt.plot(xi, f)
+            x_value = np.linspace(min(cords['x']), max(cords['x']), 1000)
+            y_value = [Interpolation.piecewise_parabolic_interpolation(cords['x'], cords['y'], x) for x in x_value]
+            plt.plot(x_value, y_value)
             plt.scatter(cords['x'], cords['y'], label=label)
-        self._setting_and_show("Промежуточные значения для данных, полученные с использованием кусочно-параболистического интерполирования")
+        self._setting_and_show("Промежуточные значения для данных, полученные с использованием кусочно-параболического интерполирования")
 
     def draw_spline_interpolation(self):
         filtered_data = filter_data(self.data)
@@ -77,3 +76,11 @@ class Plotter:
             plt.scatter(cords['x'], cords['y'])
             plt.plot(xl, yl, label=label)
         self._setting_and_show("Промежуточные значения для данных, полученные с использованием сплайн интерполирования")
+    
+    def plot_approximation(self):
+        filtered_data = filter_data(self.data)
+        power = int(input("Степень аппроксимирующего полинома: "))
+        for label, cords in filtered_data.items():
+            approximation(cords['x'], cords['y'], power)
+            plt.scatter(cords['x'], cords['y'], label=label)
+        self._setting_and_show("Задача аппроксимации")

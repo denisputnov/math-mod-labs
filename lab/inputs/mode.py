@@ -7,7 +7,7 @@ def enable_working_mode():
     print_mode_options()
     mode = input(">>> ")
 
-    if mode not in ['i', 'd']:
+    if mode not in ['i', 'd', 'a']:
         print("Введён неверный аргумент")
         exit(1)
 
@@ -18,3 +18,6 @@ def enable_working_mode():
     
     if mode == 'i':
         plotter.plot_interpolation()
+
+    if mode == 'a':
+        plotter.plot_approximation()
