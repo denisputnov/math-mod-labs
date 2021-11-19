@@ -1,4 +1,3 @@
-from utils import quicksort
 from math_utils import *
 from quicksort import quicksort
 import random as rnd

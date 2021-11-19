@@ -5,8 +5,8 @@ def create_histogram(X, interval):
     a = interval[0]
     b = interval[1]
     N = len(X)
-    k = int(1 + 3.21 * math.log2(N))  # число интервалов
-    R = b - a  # Определяем размах выборки
+    k = int(1 + 4.5 * math.log2(N))  # число интервалов
+    R = b - a  # размах выборки
     width_interval = R / k
     data_hist = []
     for i in range(k):

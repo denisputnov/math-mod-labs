@@ -22,7 +22,9 @@ def reley():
   m_ne = math.sqrt((math.pi * (sigma_rayleigh ** 2)) / 2)
   print("Математическое ожидание распрееделение Рэле ", m_ne)
   print("Дисперсия распределения Рэле: ", (2 - math.pi / 2) * (sigma_rayleigh ** 2))
+
   mk = find_mathematical_expectation(x_neumann)
+
   print("Выборочное математическое ожидание распределения Рэле:    ", mk)
   print("Выборочная дисперсия распределения Рэле с известным МО:   ", find_dispersion(x_neumann, m_ne))
   print("Выборочная дисперсия распределения Рэле с неизвестным МО: ", find_dispersion(x_neumann, mk))
