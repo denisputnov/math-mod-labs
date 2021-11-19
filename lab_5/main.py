@@ -1,14 +1,12 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy import std
-from scipy import integrate
-import random
+from prettytable import PrettyTable
 
-
-def function():
-  # return lambda x: np.log(x) / x, 0.5, 5
-  # return lambda x: np.sin(x) / (1 + np.cos(x)), 2, 3
-  return lambda x: x / (1 + x**2), -4, 0
+from Accuracy import Accuracy
+from Calculator import Calculator
+from MonteKarlo import MonteKarlo
+from config import NUMBER_OF_DIGITS_AFTER_DOT, function
 
 
 def plot():
@@ -19,101 +17,28 @@ def plot():
   plt.xlabel('x')
   plt.ylabel('y')
   plt.show()
-
-
-def generate_random_variables(x): 
-  return [random.random() for _ in range(x)]
-
-
-def get_function_max(linspaceLen):
-  f, a, b = function()
-  func_values = []
-  for x in np.linspace(a, b, linspaceLen):
-    func_values.append(f(x))
-  
-  return max(func_values)
-
-
-class Calculator:
-  @staticmethod
-  def analytically():
-    f, a, b = function()
-    return integrate.quad(f, a, b)[0] # аналитический интеграл по Ньютона-Лейбница
-
-  @staticmethod
-  def trapezium(n):
-    f, a, b = function()
-    h = (b - a) / n # высота
-    s = 0
-    while round(a, 8) < b:
-      s += 0.5 * h * (f(a) + f(a + h)) # считаем площадь
-      a += h # сдвигаем левый край
-    return s
-
-
-class Accuracy:
-  @staticmethod
-  def trapezium(n):
-    return Calculator.trapezium(2*n) - Calculator.trapezium(n)
-    
-  @staticmethod
-  def one_percent(func):
-    expect = np.abs(Calculator.analytically() / 100) # ожидаемый процент точности
-    i = 100 # изначальный процент
-    n = 1 # количество узлов 
-    prev = func(n) # значение функции
-    while i > expect: # итерабельно проходим пока не достигнем ожидаемой точности
-      n *= 2
-      trapezium = func(n)
-      i = np.abs(trapezium - prev)
-      prev = trapezium
-    
-    return n
-
-
-class MonteKarlo: 
-  @staticmethod
-  def first(N = 100):
-    f, a, b = function()
-    SUM = 0
-    random_values = generate_random_variables(N)
-    for i in range(N):
-      U =  random_values[i] * (b - a) + a
-      SUM += f(U)
-
-    return (b - a) / N * SUM
-  
-
-  @staticmethod
-  def second(N):
-    f, a, b = function()
-    k = 0
-    M = get_function_max(N)
-    for _ in range(1, N + 1):
-      X = a + (b - a) * random.random()
-      Y = M * random.random()
-      if Y < f(X):
-        k += 1 
-
-    I = M * (b - a) * k / N
-    return I
     
 
 if __name__ == '__main__':
   plot()
-  print('\n\n\n\n\n')
 
+  trapezium = Accuracy.one_percent(Calculator.trapezium)
   first = Accuracy.one_percent(MonteKarlo.first)
   second = Accuracy.one_percent(MonteKarlo.second)
 
-  print(f'Analytic count:         {Calculator.analytically()}')
-  print(f'Trapezium method count: {Calculator.trapezium(128)}')
+  t = PrettyTable(["Параметр", "Значение"])
+  t2 = PrettyTable(["Метод", "Количество узлов для точности в 1%"])
 
-  print(f'Accuracy first: {first}')
-  print(f'Accuracy second: {second}')
+  t.add_row(["Аналитическйи способ ", round(Calculator.analytically(), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Метод трапеций", round(Calculator.trapezium(trapezium), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Оценка интеграла по первому методу М-К", round(MonteKarlo.first(first), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Оценка интеграла по второму методу М-К", round(MonteKarlo.second(second), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Стандартное отклонение для 1 метода М-К", round(std([MonteKarlo.first(first)  for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Стандартное отклонение для 2 метода М-К", round(std([MonteKarlo.second(second)  for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
 
-  print(f'Monte-Carlo 1st method count: {MonteKarlo.first(first)}')
-  print(f'Monte-Carlo 2nd method count: {MonteKarlo.second(second)}')
+  t2.add_row(["Метод трапеций", trapezium])
+  t2.add_row(["Первый способ М-К", first])
+  t2.add_row(["Второй способ М-К", second])
 
-  print(f'Count standard deviation for 1st method: {std([MonteKarlo.first(first)  for _ in range(100)])}')
-  print(f'Count standard deviation for 2nd method: {std([MonteKarlo.second(second) for _ in range(100)])}')
+  print(t2)
+  print(t)
