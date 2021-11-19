@@ -3,10 +3,9 @@ from quicksort import quicksort
 import random as rnd
 
 
-# Возвращаем выборку и интервал
 def create_normal_sampling(a, b):
     if a > b:
-        print("Данные некорректны")
+        print("Неверные данные")
         raise SystemExit(1)
     r = generate_random_variables(1000)
     x = []
@@ -33,19 +32,16 @@ def create_gauss_sampling(m, d):
     return x, interval
 
 
-def create_rayleigh_sampling(sigma, n):
-    # Легко убедиться, что максимальное значение приобретает функция если аргумент xl равен sigma
+def create_rayleigh_sampling(sigma):
+    # Максимальное значение приобретает функция если аргумент xl равен sigma
     max_y = rayleigh_distribution(sigma, sigma)
-    br = sigma * n
-    ri = generate_random_variables(3000)
+    ri = generate_random_variables(5000)
     x = []
-    i = 1
-    while i < 3000:
-        X = br * ri[i]
+    for i in range(5000):
+        X = 4 * sigma * ri[i]
         Y = max_y * ri[i - 1]
         if Y <= rayleigh_distribution(X, sigma):
             x.append(X)
-        i += 1
         if len(x) >= 1000:
             break
     x = quicksort(x)

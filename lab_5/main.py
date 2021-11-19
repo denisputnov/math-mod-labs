@@ -6,6 +6,7 @@ import random
 
 def function():
   # return lambda x: np.log(x) / x, 0.5, 5
+  # return lambda x: np.sin(x) / (1 + np.cos(x)), 2, 3
   return lambda x: x / (1 + x**2), -4, 0
 
 def plot():
@@ -32,7 +33,7 @@ class Calculator:
   @staticmethod
   def analytically():
     f, a, b = function()
-    return integrate.quad(f, a, b) # аналитический интеграл по Ньютона-Лейбница
+    return integrate.quad(f, a, b)[0] # аналитический интеграл по Ньютона-Лейбница
 
   @staticmethod
   def trapezium(n):
@@ -50,16 +51,16 @@ class Accuracy:
     return Calculator.trapezium(2*n) - Calculator.trapezium(n)
     
   @staticmethod
-  def one_percent():
-    expect = 0.01 # ожидаемый процент точности
+  def one_percent(func):
+    expect = np.abs(Calculator.analytically() / 100) # ожидаемый процент точности
     i = 100 # изначальный процент
     n = 1 # количество узлов 
-    temp = Calculator.trapezium(n) # значение функции
-    while i > expect: # итерабольно проходим пока не достигнем ожидаемой точности
+    prev = func(n) # значение функции
+    while i > expect: # итерабельно проходим пока не достигнем ожидаемой точности
       n *= 2
-      trapezium = Calculator.trapezium(n)
-      i = trapezium - temp
-      temp = trapezium
+      trapezium = func(n)
+      i = np.abs(trapezium - prev)
+      prev = trapezium
     
     return n
 
@@ -94,15 +95,17 @@ if __name__ == '__main__':
   # plot()
   print('\n\n\n\n\n')
 
-  n = Accuracy.one_percent()
+  first = Accuracy.one_percent(MonteKarlo.first)
+  second = Accuracy.one_percent(MonteKarlo.second)
 
-  print(f'Analytic count:         {Calculator.analytically()[0]}')
+  print(f'Analytic count:         {Calculator.analytically()}')
   print(f'Trapezium method count: {Calculator.trapezium(128)}')
 
-  print(f'Accuracy: {n}')
+  print(f'Accuracy first: {first}')
+  print(f'Accuracy second: {second}')
 
-  print(f'Monte-Carlo 1st method count: {MonteKarlo.first(n)}')
-  print(f'Monte-Carlo 2nd method count: {MonteKarlo.second(n)}')
+  print(f'Monte-Carlo 1st method count: {MonteKarlo.first(first)}')
+  print(f'Monte-Carlo 2nd method count: {MonteKarlo.second(second)}')
 
-  print(f'Count standard deviation for 1st method: {std([MonteKarlo.first(n)  for _ in range(100)])}')
-  print(f'Count standard deviation for 2nd method: {std([MonteKarlo.second(n) for _ in range(100)])}')
+  print(f'Count standard deviation for 1st method: {std([MonteKarlo.first(first)  for _ in range(100)])}')
+  print(f'Count standard deviation for 2nd method: {std([MonteKarlo.second(second) for _ in range(100)])}')
