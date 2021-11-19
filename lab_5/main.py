@@ -4,10 +4,12 @@ from numpy import std
 from scipy import integrate
 import random
 
+
 def function():
   # return lambda x: np.log(x) / x, 0.5, 5
   # return lambda x: np.sin(x) / (1 + np.cos(x)), 2, 3
   return lambda x: x / (1 + x**2), -4, 0
+
 
 def plot():
   f, a, b = function()
@@ -18,8 +20,10 @@ def plot():
   plt.ylabel('y')
   plt.show()
 
+
 def generate_random_variables(x): 
   return [random.random() for _ in range(x)]
+
 
 def get_function_max(linspaceLen):
   f, a, b = function()
@@ -28,6 +32,7 @@ def get_function_max(linspaceLen):
     func_values.append(f(x))
   
   return max(func_values)
+
 
 class Calculator:
   @staticmethod
@@ -44,6 +49,7 @@ class Calculator:
       s += 0.5 * h * (f(a) + f(a + h)) # считаем площадь
       a += h # сдвигаем левый край
     return s
+
 
 class Accuracy:
   @staticmethod
@@ -64,6 +70,7 @@ class Accuracy:
     
     return n
 
+
 class MonteKarlo: 
   @staticmethod
   def first(N = 100):
@@ -76,6 +83,7 @@ class MonteKarlo:
 
     return (b - a) / N * SUM
   
+
   @staticmethod
   def second(N):
     f, a, b = function()
@@ -92,7 +100,7 @@ class MonteKarlo:
     
 
 if __name__ == '__main__':
-  # plot()
+  plot()
   print('\n\n\n\n\n')
 
   first = Accuracy.one_percent(MonteKarlo.first)
