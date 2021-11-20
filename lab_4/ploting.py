@@ -24,7 +24,7 @@ def plot_polygon(X, data_polygon, interval, title, dstr, m=0, d=0, sigma=0):
     for i in data_polygon:
         y.append(i[0])
         x.append(i[1])
-        plt.scatter(x, y)
+        # plt.scatter(x, y)
     plt.step(x, y)
     plt.title(title)
     plot_density_f(X, a, b, dstr, m, d, sigma)

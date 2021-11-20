@@ -18,7 +18,7 @@ def gaussian():
     data_hist_gauss, 
     k_gauss, 
     interval_gauss, 
-    "Распределение Гаусса", 
+    "Плотность вероятности распределения Гаусса (гистограма)", 
     2, 
     m=m_gauss, 
     d=d_gauss
@@ -27,7 +27,7 @@ def gaussian():
     x_gauss, 
     data_polygon_gauss, 
     interval_gauss, 
-    "Распределение Гаусса", 
+    "Функция распределения распределения Гаусса (полигоны)", 
     2, 
     m=m_gauss, 
     d=d_gauss

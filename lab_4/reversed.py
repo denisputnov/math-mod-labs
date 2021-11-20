@@ -18,14 +18,14 @@ def reversed_functions():
     data_hist_normal, 
     k_normal, 
     interval_normal, 
-    "Равномерное распределение (гистограма)", 
+    "Плотность вероятности равномерного распределения (гистограма)", 
     1
   )
   plot_polygon(
     x_normal, 
     data_polygon_normal, 
     interval_normal, 
-    "Равномерное распределение (полигоны)", 
+    "Функция распределения равномерного распределения (полигоны)", 
     1
   )
 

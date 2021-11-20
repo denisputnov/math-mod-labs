@@ -1,6 +1,6 @@
 from math_utils import *
 from quicksort import quicksort
-import random as rnd
+import random
 
 
 def create_normal_sampling(a, b):
@@ -24,7 +24,7 @@ def create_gauss_sampling(m, d):
     for _ in range(1000):
         v = 0
         for _ in range(n):
-            v += rnd.random()
+            v += random.random()
         xi = fun_gauss(v, m, sigma, n)
         x.append(xi)
     x = quicksort(x)

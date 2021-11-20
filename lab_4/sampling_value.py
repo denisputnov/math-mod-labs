@@ -5,7 +5,7 @@ def find_mathematical_expectation(X):
     return s / len(X)
 
 
-def find_dispersion(X, m):
+def find_dispersion(X, m): # среднее 
     s = 0
     for x in X:
         s += (x - m)**2

@@ -18,7 +18,7 @@ def reley():
     data_hist_neumann, 
     k_neumann, 
     interval_neumann, 
-    "Распределение Реле", 
+    "Плотность вероятности распределения Реле (гистограма)", 
     3,
     sigma=sigma_rayleigh
   )
@@ -26,12 +26,12 @@ def reley():
     x_neumann, 
     data_polygon_neumann, 
     interval_neumann, 
-    "Распределение Реле", 
+    "Функция распределения распределения Реле (полигоны)", 
     3,
     sigma=sigma_rayleigh
   )
 
-  m_ne = math.sqrt((math.pi * (sigma_rayleigh ** 2)) / 2)
+  m_ne = math.sqrt((math.pi * (sigma_rayleigh ** 2)) / 2) # мат ожидание рраспределения Рэле
   mk = find_mathematical_expectation(x_neumann)
 
   t = PrettyTable([
