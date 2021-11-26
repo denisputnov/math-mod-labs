@@ -1,4 +1,5 @@
-from utils import generate_random_variables, get_function_max
+import numpy as np
+from utils import generate_random_variables, get_max_min
 import random
 from config import function
 
@@ -12,19 +13,19 @@ class MonteKarlo:
       U =  random_values[i] * (b - a) + a
       SUM += f(U)
 
-    return (b - a) / N * SUM
+    return np.abs((b - a) / N * SUM)
   
 
   @staticmethod
   def second(N):
     f, a, b = function()
     k = 0
-    M = get_function_max(N)
-    for _ in range(1, N + 1):
-      X = a + (b - a) * random.random()
-      Y = M * random.random()
-      if Y < f(X):
+    max, min = get_max_min()
+    for _ in range(N):
+      X = random.uniform(a, b)
+      Y = random.uniform(max, min)
+      if Y > f(X):
         k += 1 
 
-    I = M * (b - a) * k / N
+    I = (max - min) * np.abs(b - a) * k / N
     return I

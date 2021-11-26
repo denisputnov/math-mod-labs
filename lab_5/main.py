@@ -28,13 +28,13 @@ if __name__ == '__main__':
 
   t = PrettyTable(["Параметр", "Значение"])
   t2 = PrettyTable(["Метод", "Количество узлов для точности в 1%"])
-
-  t.add_row(["Аналитическйи способ ", round(Calculator.analytically(), NUMBER_OF_DIGITS_AFTER_DOT)])
+  second = second if second > 128 else 128
+  t.add_row(["Аналитическйи способ", round(Calculator.analytically(), NUMBER_OF_DIGITS_AFTER_DOT)])
   t.add_row(["Метод трапеций", round(Calculator.trapezium(trapezium), NUMBER_OF_DIGITS_AFTER_DOT)])
   t.add_row(["Оценка интеграла по первому методу М-К", round(MonteKarlo.first(first), NUMBER_OF_DIGITS_AFTER_DOT)])
   t.add_row(["Оценка интеграла по второму методу М-К", round(MonteKarlo.second(second), NUMBER_OF_DIGITS_AFTER_DOT)])
-  t.add_row(["Стандартное отклонение для 1 метода М-К", round(std([MonteKarlo.first(first)  for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
-  t.add_row(["Стандартное отклонение для 2 метода М-К", round(std([MonteKarlo.second(second)  for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Стандартное отклонение для 1 метода М-К", round(std([MonteKarlo.first(first)   for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
+  t.add_row(["Стандартное отклонение для 2 метода М-К", round(std([MonteKarlo.second(second) for _ in range(100)]), NUMBER_OF_DIGITS_AFTER_DOT)])
 
   t2.add_row(["Метод трапеций", trapezium])
   t2.add_row(["Первый способ М-К", first])

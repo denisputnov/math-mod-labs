@@ -9,14 +9,14 @@ class Accuracy:
     
   @staticmethod
   def one_percent(func):
-    expect = np.abs(Calculator.analytically() / 100) # ожидаемый процент точности
+    expect = np.abs(Calculator.analytically()) # ожидаемый процент точности
     i = 100 # изначальный процент
     n = 1 # количество узлов 
-    prev = func(n) # значение функции
+    prev = np.abs(func(n)) # значение функции
     while i > expect: # итерабельно проходим пока не достигнем ожидаемой точности
       n *= 2
-      trapezium = func(n)
-      i = np.abs(trapezium - prev)
-      prev = trapezium
-    
+      now = np.abs(func(n))
+      i = np.abs((now - prev) * 100 / prev)
+      prev = now
+
     return n
