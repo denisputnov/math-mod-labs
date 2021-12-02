@@ -1,7 +1,7 @@
 import numpy as np
 
 
-NUMBER_OF_DIGITS_AFTER_DOT = 8
+NUMBER_OF_DIGITS_AFTER_DOT = 4
 
 
 def function():

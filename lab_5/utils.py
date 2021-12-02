@@ -1,5 +1,6 @@
 import random
 import numpy as np
+from scipy import integrate
 from config import function
 
 
@@ -15,3 +16,5 @@ def get_max_min():
 
   return max(func_values), min(func_values)
   
+def math_expectation():
+  pass

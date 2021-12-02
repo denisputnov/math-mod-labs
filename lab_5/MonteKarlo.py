@@ -22,9 +22,9 @@ class MonteKarlo:
     k = 0
     max, min = get_max_min()
     for _ in range(N):
-      X = random.uniform(a, b)
-      Y = random.uniform(max, min)
-      if Y > f(X):
+      X = a + (b - a) * random.random()
+      Y = min + (max - min) * random.random()
+      if 0 > Y > f(X):
         k += 1 
 
     I = (max - min) * np.abs(b - a) * k / N
