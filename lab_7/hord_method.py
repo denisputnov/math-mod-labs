@@ -14,7 +14,7 @@ def hord_method_with_params(x0, iterations, a, b, c, d, eps, round_to):
     x_prev = x
     i += 1
 
-  print("Число итераций: ", i)
+  print("X: ", i)
   print("C параметрами: ", round(x, round_to))
   plt.scatter(x, 0, color="red")
 

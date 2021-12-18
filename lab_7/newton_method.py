@@ -8,14 +8,15 @@ def newton_method_with_param(x, n, a, b, c, d, eps, number):
     N = 0
     for i in range(n):
         N += 1
-        root = x - (fun_with_param(a, b, c, d, x) / derivative_fun_with_param(a, b, c, x))
+        root = x - (f(a, b, c, d, x) / f_derivative(a, b, c, x))
         # Если разница между текущим корнем и предыдущим меньше eps
         if abs(root - x) < eps:
             break
         x = root
-    print("Число итераций: ", N)
-    print("С параметрами: ", round(root, number))
-    plt.scatter(root, 0, color="red")
+    print("Итераций: ", N)
+    print("X: ", round(root, number))
+    y = f(a,b,c,d,x)
+    plt.scatter(root, y, color="red")
 
 
 def newton_method_without_param(x, n, eps, number):
