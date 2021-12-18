@@ -16,7 +16,7 @@ def hord_method_with_params(x0, iterations, a, b, c, d, eps, round_to):
 
   print("Число итераций: ", i)
   print("C параметрами: ", round(x, round_to))
-  plt.scatter(x, 0)
+  plt.scatter(x, 0, color="red")
 
 
 
@@ -34,4 +34,4 @@ def hord_method_without_params(x0, iterations, eps, round_to):
 
   print("Число итераций: ", i)
   print("Без параметров: ", round(x, round_to))
-  plt.scatter(x, 0)
+  plt.scatter(x, 0, color="green")
