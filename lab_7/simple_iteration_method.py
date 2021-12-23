@@ -1,31 +1,47 @@
-from equations import *
 import matplotlib.pyplot as plt
 
+from equations import *
 
-def iteration_method_with_param(x, eps, number, a, b, c, d, iterations):
-    if abs(fi_derivative(a, b, c, x)) >= 1:
-        exit(f"Итерационный процесс расходится {fi_derivative(a,b,c,-2)}")
-    print(fi_derivative(a,b,c,x))
-    root = fi(a, b, c, d, x)
+
+def iteration_method_with_param(x0, eps, number, a, b, c, d):
+    # if abs(derivative_phi_with_param(a, b, c, x)) >= 1:
+    #     print(abs(derivative_phi_with_param(a, b, c, x)))
+    #     return print("Итерационный процесс расходится")
+
+    root = phi_with_param(a, b, c, d, x0)
+    # print('first:', root)
+    x = x0
     n = 0
-    while abs(root - x) >= eps and n < iterations:
-        print(n)
-        n += 1
+    for i in range(50):
         x = root
-        root = fi(a, b, c, d, x)
+        root = phi_with_param(a, b, c, d, x)
+        n += 1
+        if abs(x - root) < eps:
+            break
+    # while abs(root - x) >= eps:
+    #     # if abs(derivative_phi_with_param(a, b, c, root)) >= 1:
+    #     #     print('@@@@', abs(derivative_phi_with_param(a, b, c, root)))
+    #     #     return print("Итерационный процесс расходится")
+    #     n += 1
+    #     x = root
+    #     # breakpoint()
+    #     root = phi_with_param(a, b, c, d, x)
     print("Число итераций: ", n)
     print("X: ", round(root, number))
-    plt.scatter(root, 0, color="red")
+    y = fun_with_param(a, b, c, d, root)
+    plt.scatter(root, y, color="red")
 
 
 def iteration_method_without_param(x, eps, number):
+    # if abs(derivative_phi(x)) >= 1:
+    #     return print("Итерационный процесс расходится")
     root = phi(x)
     n = 0
     while abs(root - x) >= eps:
+        # if abs(derivative_phi(root)) >= 1:
+        #     return print("Итерационный процесс расходится")
         n += 1
         x = root
         root = phi(x)
     print("Число итераций: ", n)
-    print("X: ", round(root, number))
-    y = f2(2,3, x) 
-    plt.scatter(root, y, color="green")
+    print("Без параметров: ", round(root, number))
