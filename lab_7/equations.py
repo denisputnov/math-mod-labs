@@ -7,7 +7,7 @@ def fun_with_param(a, b, c, d, x):
 
 
 def phi_with_param(a, b, c, d, x):
-    return 1 + (- 1 / (3 * (x ** 2) + 4 * x + 3)) * (1 * (x ** 3) + 2 * (x ** 2) + 3 * x + 4)
+    return x + (- 1 / (3 * (x ** 2) + 4 * x + 3)) * (1 * (x ** 3) + 2 * (x ** 2) + 3 * x + 4)
 
 
 def derivative_fun_with_param(a, b, c, x):
@@ -15,7 +15,7 @@ def derivative_fun_with_param(a, b, c, x):
 
 
 def derivative_phi_with_param(a, b, c, x):
-    return ( -10 / (10*x+3)) + ( (10*(10*x+4))/((10*x+3)**2))
+    return 1 + ( -10 / (10*x+3)) + ( (10*(10*x+4))/((10*x+3)**2))
 
 
 # Функция без параметров
